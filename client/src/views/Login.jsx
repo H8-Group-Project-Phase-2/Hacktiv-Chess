@@ -1,6 +1,20 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const body = { username, password };
+      const { data } = await axios.post("http://localhost:3000/login", body);
+      localStorage.setItem("access_token", data.access_token);
+      navigate("/");
+    } catch (error) {}
+  }
+
   const navigate = useNavigate();
 
   function handleKlik() {
@@ -14,13 +28,14 @@ export default function Login() {
         <p className="text-gray-600 mb-6 text-sm">
           Welcome! So good to have you back!
         </p>
-        <form autoComplete="off">
+        <form onSubmit={handleSubmit}>
           <p className="text-red-500" />
           <div className="space-y-2">
             <div>
               <label htmlFor="email" className="text-gray-600 mb-2 block" />
               User name
               <input
+                onChange={(e) => setUsername(e.target.value)}
                 type="text"
                 name="name"
                 id="name"
@@ -35,6 +50,7 @@ export default function Login() {
               Password
               <div className="relative">
                 <input
+                  onChange={(e) => setPassword(e.target.value)}
                   type="password"
                   name="password"
                   id="password"

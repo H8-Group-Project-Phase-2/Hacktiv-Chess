@@ -16,6 +16,7 @@ export default function Register() {
     try {
       const body = { username, password };
       await axios.post("http://localhost:3000/register", body);
+      navigate("login");
     } catch (error) {}
   }
 
