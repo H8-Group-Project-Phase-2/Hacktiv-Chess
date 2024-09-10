@@ -14,9 +14,9 @@ export default function Navbar() {
         <a className="btn btn-ghost text-xl">Hacktiv chess</a>
       </div>
       <div className="navbar-end">
-        <a onClick={Logout} className="btn">
+        <button onClick={Logout} className="btn">
           Logout
-        </a>
+        </button>
       </div>
     </div>
   );

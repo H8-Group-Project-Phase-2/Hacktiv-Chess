@@ -2,8 +2,8 @@ import { createBrowserRouter, redirect } from "react-router-dom";
 import Register from "../views/Register";
 import Play from "../views/Play";
 import Login from "../views/Login";
-import BaseLayOut from "../Layout/BaseLayOut";
 import HomePage from "../views/HomePage";
+import BaseLayOut from "../Layout/BaseLayOut";
 
 const router = createBrowserRouter([
   {
