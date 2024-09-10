@@ -8,6 +8,8 @@ class AuthControllers {
 
       res.status(200).json({ message: "Register success" });
     } catch (error) {
+      console.log(error);
+
       let statusCode = 500;
       let message = "Internal Server Error";
       if (
