@@ -8,6 +8,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.post("/register", AuthControllers.postRegister);
+app.post("/login", AuthControllers.postLogin);
 
 app.listen(port, () => {
   console.log("Berlari di port", port);
