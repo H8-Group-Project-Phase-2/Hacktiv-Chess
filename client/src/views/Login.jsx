@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -12,10 +14,9 @@ export default function Login() {
       const { data } = await axios.post("http://localhost:3000/login", body);
       localStorage.setItem("access_token", data.access_token);
       navigate("/");
+      // console.log(data);
     } catch (error) {}
   }
-
-  const navigate = useNavigate();
 
   function handleKlik() {
     navigate("/register");

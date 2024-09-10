@@ -16,7 +16,7 @@ export default function Register() {
     try {
       const body = { username, password };
       await axios.post("http://localhost:3000/register", body);
-      navigate("login");
+      navigate("/login");
     } catch (error) {}
   }
 
@@ -36,7 +36,6 @@ export default function Register() {
                 id="name"
                 type="text"
                 name="name"
-                required="required"
               />
             </div>
             <div className="mt-4">
@@ -49,7 +48,6 @@ export default function Register() {
                 id="password"
                 type="password"
                 name="password"
-                required="required"
                 autoComplete="new-password"
               />
             </div>
