@@ -1,10 +1,23 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Register() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   function handleClick() {
     navigate("/login");
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const body = { username, password };
+      await axios.post("http://localhost:3000/register", body);
+      navigate("login");
+    } catch (error) {}
   }
 
   return (
@@ -12,18 +25,18 @@ export default function Register() {
       <div className="p-10">
         <h1 className="mb-8 font-extrabold text-4xl">Register</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <form>
+          <form onSubmit={handleSubmit}>
             <div>
               <label className="block font-semibold" htmlFor="name">
                 Name
               </label>
               <input
+                onChange={(e) => setUsername(e.target.value)}
                 className="w-full shadow-inner bg-gray-100 rounded-lg placeholder-black text-2xl p-4 border-none block mt-1 w-full"
                 id="name"
                 type="text"
                 name="name"
                 required="required"
-                autofocus="autofocus"
               />
             </div>
             <div className="mt-4">
@@ -31,6 +44,7 @@ export default function Register() {
                 Password
               </label>
               <input
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full shadow-inner bg-gray-100 rounded-lg placeholder-black text-2xl p-4 border-none block mt-1 w-full"
                 id="password"
                 type="password"
