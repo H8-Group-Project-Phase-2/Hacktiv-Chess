@@ -1,15 +1,11 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
-  function handleClick() {
-    navigate("/login");
-  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -58,9 +54,9 @@ export default function Register() {
               >
                 Register
               </button>
-              <a onClick={handleClick} className="font-semibold">
+              <Link to={"/login"} className="font-semibold">
                 Already registered?
-              </a>
+              </Link>
             </div>
           </form>
           <aside className="">
