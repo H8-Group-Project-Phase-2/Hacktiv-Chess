@@ -1,9 +1,9 @@
 import ChessBoard from "../components/ChessBoard";
 
-export default function Play() {
+export default function Play({socket}) {
   return (
     <>
-      <ChessBoard/>
+      <ChessBoard socket={socket}/>
     </>
   );
 }
