@@ -32,7 +32,7 @@ export default function Login() {
     <div className="contain py-16">
       <div className="max-w-lg mx-auto shadow px-6 py-7 rounded overflow-hidden">
         <h2 className="text-2xl uppercase font-medium mb-1">Login</h2>
-        <p className="text-gray-600 mb-6 text-sm">
+        <p className="text-gray-800 mb-6 text-sm">
           Welcome! So good to have you back!
         </p>
         <form onSubmit={handleSubmit}>
@@ -46,7 +46,7 @@ export default function Login() {
                 type="text"
                 name="name"
                 id="name"
-                className="block w-full border border-gray-300 px-4 py-3 text-gray-800 text-sm rounded focus:ring-0 focus:border-teal-500 placeholder-gray-400"
+                className="block w-full border bg-slate-100 border-gray-300 px-4 py-3 text-gray-800 text-sm rounded focus:ring-0 focus:border-teal-500 placeholder-gray-400"
                 placeholder="put your name"
               />
             </div>
@@ -61,7 +61,7 @@ export default function Login() {
                   type={invisible ? "password" : "text"}
                   name="password"
                   id="password"
-                  className="block w-full border border-gray-300 px-4 py-3 text-gray-800 text-sm rounded focus:ring-0 focus:border-teal-500 placeholder-gray-400"
+                  className="block w-full border bg-slate-100 border-gray-300 px-4 py-3 text-gray-800 text-sm rounded focus:ring-0 focus:border-teal-500 placeholder-gray-400"
                   placeholder="***********"
                 />
                 <div className="cursor-pointer absolute inset-y-0 right-0 flex items-center px-8 text-gray-800 border-l border-gray-300">
@@ -98,10 +98,10 @@ export default function Login() {
               Login
             </button>
             <div className="flex gap-2 pt-5">
-              <p className="text-gray-600 text-sm">Don't have an account?</p>
+              <p className="text-gray- text-sm">Don't have an account?</p>
               <Link
                 to={"/register"}
-                className="text-gray-600 text-sm underline"
+                className="text-gray-800 text-sm underline"
               >
                 Register here
               </Link>

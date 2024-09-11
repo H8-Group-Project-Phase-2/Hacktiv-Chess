@@ -19,7 +19,9 @@ export default function Register() {
   return (
     <>
       <div className="p-10 bg-white">
-        <h1 className="mb-8 font-semibold text-4xl text-gray-800">Register</h1>
+        <h1 className="mb-8 uppercase font-semibold text-4xl text-gray-800">
+          Register
+        </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <form onSubmit={handleSubmit}>
             <div>
@@ -61,18 +63,18 @@ export default function Register() {
           </form>
           <aside className="">
             <div className="bg-gray-100 p-8 rounded">
-              <h2 className="font-bold text-2xl">Instructions</h2>
-              <ul className="list-disc mt-4 list-inside">
-                <li>
+              <h2 className="font-bold text-gray-800 text-2xl">Instructions</h2>
+              <ul className="list-disc mt-4 list-inside ">
+                <li className="text-gray-800">
                   All users must provide a valid user name and password to
                   create an account.
                 </li>
-                <li>
+                <li className="text-gray-800">
                   Users must not use offensive, vulgar, or otherwise
                   inappropriate language in their username or profile
                   information
                 </li>
-                <li>
+                <li className="text-gray-800">
                   Users must not create multiple accounts for the same person.
                 </li>
               </ul>
