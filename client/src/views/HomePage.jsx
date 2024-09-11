@@ -16,8 +16,14 @@ export default function HomePage({ url }) {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleCreateRoom = () => {
     navigate("/room-form");
