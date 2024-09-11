@@ -28,10 +28,8 @@ export default function Play({socket}) {
 
       if (data["Host ID"].username === localStorage.getItem("username")) {
         socket.emit("join", roomId)
-        setCurrentColor("white")
       } else if (data["Opponent ID"].username === localStorage.getItem("username")){
         socket.emit("join", roomId)
-        setCurrentColor("black")
       }
       
     } catch (error) {

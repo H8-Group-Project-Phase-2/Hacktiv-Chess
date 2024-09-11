@@ -40,6 +40,7 @@ export default function ChessBoard({ socket }) {
       let move = {
         from: sourceSquare,
         to: targetSquare,
+        promotion: "q"
       };
 
       const sideColor = currentColor[0]
