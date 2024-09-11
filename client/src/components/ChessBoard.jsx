@@ -1,32 +1,68 @@
 import Chessboard from "chessboardjsx";
 import { Chess } from "chess.js";
-import { useState } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
+import { colorContext } from "../context/ColorContext";
 
-export default function ChessBoard() {
-  const [game, setGame] = useState(new Chess());
-  const [checkSquare, setCheckSquare] = useState(null); 
+export default function ChessBoard({ socket }) {
+  const [fen, setFen] = useState("start");
+  const [checkSquare, setCheckSquare] = useState();
+  const { currentColor, color, setCurrentColor } = useContext(colorContext);
 
-  const handleMove = ({ sourceSquare, targetSquare }) => {
+  let game = useRef(null);
+
+  useEffect(() => {
+    socket.connect();
+
+    game.current = new Chess();
+
+    socket.on("position:update", (move) => {
+      console.log(move);
+
+      game.current.move(move);
+      setFen(game.current.fen());
+
+      if (game.current.inCheck()) {
+        const kingSquare = findKingSquare(game.current);
+        setCheckSquare(kingSquare);
+      } else {
+        setCheckSquare(null);
+      }
+    });
+
+    return () => {
+      socket.off("position:update");
+      socket.disconnect();
+    };
+  }, []);
+
+  const onDrop = ({ sourceSquare, targetSquare }) => {
     try {
-      const gameCopy = new Chess(game.fen());
-      const move = gameCopy.move({
+      let move = {
         from: sourceSquare,
         to: targetSquare,
-        promotion: "q", 
-      });
+      };
 
-      if (move) {
-        setGame(gameCopy); 
+      const sideColor = currentColor[0]
 
-        if (gameCopy.inCheck()) {
-          const kingSquare = findKingSquare(gameCopy);
-          setCheckSquare(kingSquare);
-        } else {
-          setCheckSquare(null);
-        }
+      if (game.current.get(sourceSquare).color !== sideColor) {
+        throw new Error()
       }
+
+      game.current.move(move);
+
+      setFen(game.current.fen());
+
+      if (game.current.inCheck()) {
+        const kingSquare = findKingSquare(game.current);
+        setCheckSquare(kingSquare);
+      } else {
+        setCheckSquare(null);
+      }
+
+      socket.emit("position:new", move);
     } catch (error) {
-      null; 
+      setFen(game.current.fen());
+      console.log(error);
     }
   };
 
@@ -38,8 +74,7 @@ export default function ChessBoard() {
       for (let col = 0; col < 8; col++) {
         const piece = board[row][col];
         if (piece && piece.type === "k" && piece.color === currentTurn) {
-
-          const file = String.fromCharCode(97 + col); 
+          const file = String.fromCharCode(97 + col);
           const rank = 8 - row;
           return `${file}${rank}`;
         }
@@ -55,12 +90,13 @@ export default function ChessBoard() {
   return (
     <div>
       <Chessboard
-        position={game.fen()}
-        onDrop={handleMove}
-        squareStyles={checkStyle} 
+        position={fen}
+        onDrop={onDrop}
+        squareStyles={checkStyle}
         showNotation={true}
         lightSquareStyle={{ backgroundColor: "rgb(238, 238, 213)" }}
         darkSquareStyle={{ backgroundColor: "rgb(124, 148, 92)" }}
+        orientation={currentColor}
       />
     </div>
   );

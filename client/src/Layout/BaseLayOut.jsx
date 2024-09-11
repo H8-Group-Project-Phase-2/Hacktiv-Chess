@@ -1,11 +1,11 @@
 import Navbar from "../components/Navbar";
 import { Outlet } from "react-router-dom";
 
-export default function BaseLayOut() {
+export default function BaseLayOut({socket}) {
   return (
     <>
       <Navbar />
-      <Outlet />
+      <Outlet/>
     </>
   );
 }
