@@ -1,4 +1,19 @@
 export default function HomePage() {
+
+
+  if (loading) {
+    return (
+      <>
+        <section className="flex justify-center items-center" >
+          {/* <img src={gifLoading} /> */}
+          <h1>
+            loading woiiii!!!
+          </h1>
+        </section>
+      </>
+    );
+  }
+
   return (
     <>
       <div id="PAGE-HOME" className="p-3">
@@ -21,18 +36,6 @@ export default function HomePage() {
 
         {/* {JSON.stringify(jobs)} */}
         {/* Indikator Loading */}
-        {loading ? (
-          <div className="mt-32 flex justify-center items-center">
-            {/* <img src={magnifyingGlass} alt="Loading..." /> */}
-            <h1>loading yee bos</h1>
-          </div>
-        ) : (
-          // <main className="grid grid-cols-3 gap-5 px-10 my-8 bg-white">
-          //   {myjob.map((job) => (
-          //     <Card key={job.id} job={job} url={url} fetchMyJob={fetchMyJob} />
-          //   ))}
-          // </main>
-          // 
         
       </div>
     </>
