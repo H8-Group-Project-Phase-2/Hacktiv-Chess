@@ -112,6 +112,32 @@ class MainController {
       res.status(statusCode).json({ message });
     }
   }
+
+  static async getRoom(req, res,next) {
+    try {
+      const {roomId} = req.params
+      const room = await Room.findByPk(roomId, {
+        include: [{
+          model: User,
+          as: "Host ID",
+          attributes: {
+            exclude: ["password"]
+          }
+        }, {
+          model: User, 
+          as: "Opponent ID", 
+          attributes: {
+            exclude: ["password"]
+          }
+        }]
+      })
+      res.status(200).json(room)
+    } catch (error) {
+      let statusCode = 500;
+      let message = "Internal Server Error";
+      res.status(statusCode).json({ message });
+    }
+  }
 }
 
 module.exports = MainController;

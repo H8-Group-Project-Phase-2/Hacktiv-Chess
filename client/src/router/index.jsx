@@ -7,21 +7,23 @@ import HomePage from "../views/HomePage";
 import BaseLayOut from "../Layout/BaseLayOut";
 import CreateRoomForm from "../views/CreateRoomForm";
 
-const socket = io("http://localhost:3000", {
+const url = "http://localhost:3000";
+
+const socket = io(url, {
   autoConnect: false,
 });
 
 const router = createBrowserRouter([
   {
     path: "/register",
-    element: <Register />,
+    element: <Register url={url}/>,
   },
   {
     path: "/login",
-    element: <Login />,
+    element: <Login url={url}/>,
   },
   {
-    element: <BaseLayOut socket={socket} />,
+    element: <BaseLayOut socket={socket} url={url}/>,
     loader: () => {
       if (!localStorage.access_token) {
         return redirect("/login");
@@ -31,15 +33,15 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomePage socket={socket} />,
+        element: <HomePage socket={socket} url={url}/>,
       },
       {
-        path: "/play",
-        element: <Play socket={socket} />,
+        path: "/play/:roomId",
+        element: <Play socket={socket} url={url}/>,
       },
       {
         path: "/room-form",
-        element: <CreateRoomForm />,
+        element: <CreateRoomForm url={url}/>,
       },
     ],
   },
