@@ -50,11 +50,11 @@ export default function Register() {
             <div className="flex items-center justify-between mt-8">
               <button
                 type="submit"
-                className="flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
+                className="flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white text-white bg-teal-500 border border-teal-500 md:py-4 md:text-lg md:px-10 rounded hover:bg-transparent hover:text-teal-500 transition uppercase font-roboto font-medium"
               >
                 Register
               </button>
-              <Link to={"/login"} className="font-semibold text-gray-800">
+              <Link to={"/login"} className="text-gray-800">
                 Already registered?
               </Link>
             </div>

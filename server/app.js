@@ -12,13 +12,22 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  socket.on("join", (roomId, color) => {
+  socket.on("join", (roomId) => {
     socket.join(roomId)
-    socket.to(roomId).emit(color)
+    console.log(`someone joined room ${roomId}`)
   });
 
-  socket.on("position:new", (move) => {
-    socket.broadcast.emit("position:update", move);
+  socket.on("position:new", (roomId, move) => {
+    console.log(roomId)
+    console.log(move)
+
+    if (!io.sockets.adapter.rooms.has(roomId)) {
+      console.error(`Room ${roomId} does not exist.`);
+      return;
+    }
+
+    console.log(`Received move for room ${roomId}:`, move);
+    io.to(roomId).emit("position:update", move);
   });
 });
 
