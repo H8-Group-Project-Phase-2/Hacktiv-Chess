@@ -13,6 +13,7 @@ export default function Login() {
       const body = { username, password };
       const { data } = await axios.post("http://localhost:3000/login", body);
       localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("username", data.username);
       navigate("/");
       // console.log(data);
     } catch (error) {}

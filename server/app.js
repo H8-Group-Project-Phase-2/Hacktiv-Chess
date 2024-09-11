@@ -12,12 +12,14 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
+  socket.on("create-room", (data) => {
+    console.log(data);
+  });
+
   socket.on("position:new", (move) => {
     socket.broadcast.emit("position:update", move);
   });
 });
-
-
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -35,9 +37,10 @@ app.get("/user/:userid", MainController.getUserInfo);
 app.patch("/winner", MainController.patchWinner);
 app.patch("/loser", MainController.patchLoser);
 app.patch("/draw", MainController.patchDraws);
-app.post("/create-room", MainController.postRoom);
-app.get("/join-room", MainController.getRooms);
-app.patch("/join-room/:roomid", MainController.patchJoinRoom);
+app.post("/rooms", MainController.postRoom);
+app.get("/rooms", MainController.getRooms);
+app.get("/rooms/:roomId", MainController.getRoom);
+app.patch("/rooms/:roomid", MainController.patchJoinRoom);
 
 const port = 3000;
 server.listen(port, () => {
