@@ -1,23 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect, useContext } from "react";
 import ChessBoard from "../components/ChessBoard";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { colorContext } from "../context/ColorContext";
 
 export default function Play({socket}) {
-  const [room, setRoom] = useState()
   const { roomId } = useParams()
+  const { setCurrentColor } = useContext(colorContext);
 
   useEffect(() => {
     socket.connect();
 
-    getRoom()
+    joinRoom()
 
     return () => {
       socket.disconnect()
     }
   }, [])
 
-  async function getRoom() {
+  async function joinRoom() {
     try {
       const { data } = await axios.get(`${url}/rooms/${roomId}`, {
         headers: {
@@ -26,13 +27,15 @@ export default function Play({socket}) {
       })
 
       if (data["Host ID"].username === localStorage.getItem("username")) {
-        socket.emit("create-room", roomId)
-      } else {
-        socket.emit("join-room")
+        socket.emit("join", roomId)
+        setCurrentColor("white")
+      } else if (data["Opponent ID"].username === localStorage.getItem("username")){
+        socket.emit("join", roomId)
+        setCurrentColor("black")
       }
       
     } catch (error) {
-      
+      console.log(error)
     }
   }
 

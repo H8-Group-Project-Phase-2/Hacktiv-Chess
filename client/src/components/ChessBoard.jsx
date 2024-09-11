@@ -6,7 +6,7 @@ import { colorContext } from "../context/ColorContext";
 export default function ChessBoard({ socket }) {
   const [fen, setFen] = useState("start");
   const [checkSquare, setCheckSquare] = useState();
-  const { currentColor, color, setCurrentColor } = useContext(colorContext);
+  const { currentColor } = useContext(colorContext);
 
   let game = useRef(null);
 
