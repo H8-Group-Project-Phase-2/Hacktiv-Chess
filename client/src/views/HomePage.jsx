@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import CardRoom from "../components/CardRoom"
+import CardRoom from "../components/CardRoom";
 import { colorContext } from "../context/ColorContext";
 
 export default function HomePage({ url }) {
@@ -17,20 +17,19 @@ export default function HomePage({ url }) {
         },
       });
 
-      setRooms(data)
+      setRooms(data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
   useEffect(() => {
-    fetchRooms()
-  }, [])
+    fetchRooms();
+  }, []);
 
   const handleCreateRoom = () => {
-    setCurrentColor("white")
+    setCurrentColor("white");
     navigate("/room-form");
-    
   };
 
   return (
@@ -41,10 +40,17 @@ export default function HomePage({ url }) {
       >
         Create room
       </button>
+      <button
+        onClick={fetchRooms}
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+      >
+        Refresh Room
+      </button>
       <main className="flex flex-wrap justify-start gap-5">
-        {rooms.length > 0 && rooms.map(room => {
-          return <CardRoom room={room} url={url}/>
-        })}
+        {rooms.length > 0 &&
+          rooms.map((room) => {
+            return <CardRoom room={room} url={url} />;
+          })}
       </main>
     </div>
   );
