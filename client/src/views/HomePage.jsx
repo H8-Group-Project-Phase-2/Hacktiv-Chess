@@ -1,10 +1,12 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import CardRoom from "../components/CardRoom"
+import { colorContext } from "../context/ColorContext";
 
 export default function HomePage({ url }) {
   const [rooms, setRooms] = useState([]);
+  const { setCurrentColor } = useContext(colorContext);
   const navigate = useNavigate();
 
   async function fetchRooms() {
@@ -26,7 +28,9 @@ export default function HomePage({ url }) {
   }, [])
 
   const handleCreateRoom = () => {
+    setCurrentColor("white")
     navigate("/room-form");
+    
   };
 
   return (

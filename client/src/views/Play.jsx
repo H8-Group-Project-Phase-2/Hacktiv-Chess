@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { colorContext } from "../context/ColorContext";
 
-export default function Play({socket}) {
+export default function Play({socket, url}) {
   const { roomId } = useParams()
   const { setCurrentColor } = useContext(colorContext);
 
@@ -28,8 +28,11 @@ export default function Play({socket}) {
 
       if (data["Host ID"].username === localStorage.getItem("username")) {
         socket.emit("join", roomId)
+        setCurrentColor("white")
+        console.log("9898988988988989")
       } else if (data["Opponent ID"].username === localStorage.getItem("username")){
         socket.emit("join", roomId)
+        setCurrentColor("black")
       }
       
     } catch (error) {
@@ -39,7 +42,7 @@ export default function Play({socket}) {
 
   return (
     <>
-      <ChessBoard socket={socket}/>
+      <ChessBoard socket={socket} roomId={roomId}/>
     </>
   );
 }
