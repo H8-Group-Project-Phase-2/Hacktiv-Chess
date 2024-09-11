@@ -32,38 +32,8 @@ export default function HomePage() {
           //     <Card key={job.id} job={job} url={url} fetchMyJob={fetchMyJob} />
           //   ))}
           // </main>
-          <section className="flex flex-col gap-4 rounded bg-gray-100 p-4">
-            <p className="text-2xl font-bold">DataTable Page</p>
-
-            {jobs.length > 0 && (
-              <table className="border-1 border border-emerald-400">
-                <thead>
-                  <tr>
-                    <th className="border border-emerald-400">title</th>
-                    <th className="border border-emerald-400">description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {jobs.map((job,idx) => (
-                    <tr key={idx}>
-                      <td className="border border-emerald-400">{job.title}</td>
-                      <td className="border border-emerald-400">
-                        {job.description}
-                      </td>
-                      <td className="border border-emerald-400">
-                        <button
-                         className="bg-blue-500 text-white px-4 py-2 ml-2 rounded-lg hover:bg-blue-700 transition"
-                         onClick={() => fetchJob(job.title, job.description)}
-                        >Bookmark
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </section>
-        )}
+          // 
+        
       </div>
     </>
   );
