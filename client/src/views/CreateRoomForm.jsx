@@ -1,4 +1,4 @@
-export default function CreateForm() {
+export default function CreateRoomForm() {
   return (
     <form className="max-w-xl mx-auto p-4 shadow-lg rounded-lg bg-white">
       <h2 className="text-2xl font-bold mb-4">Create room</h2>
