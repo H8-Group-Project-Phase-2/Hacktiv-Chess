@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Login() {
@@ -16,10 +16,6 @@ export default function Login() {
       navigate("/");
       // console.log(data);
     } catch (error) {}
-  }
-
-  function handleKlik() {
-    navigate("/register");
   }
 
   return (
@@ -91,12 +87,12 @@ export default function Login() {
             </button>
             <div className="flex gap-2 pt-5">
               <p className="text-gray-600 text-sm">Don't have an account?</p>
-              <a
-                onClick={handleKlik}
+              <Link
+                to={"/register"}
                 className="text-gray-600 text-sm underline"
               >
                 Register here
-              </a>
+              </Link>
             </div>
           </div>
         </form>
