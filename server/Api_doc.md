@@ -193,28 +193,4 @@ _Response(500 - Internal Server Error)_
 
 ```
 
-## 3.PATCH /winner
-
-Description:
-Update user status as a winner.
-
-Request:
-
-
-_Response (200 - OK)_
-
-```json
-{
-  "message": "Winner status updated"
-}
-```
-
-_Response (400 - Bad Request)_
-
-```json
-{
-  "message": "Invalid request data"
-}
-```
-
 &nbsp;

@@ -1,18 +1,18 @@
 export default function HomePage() {
 
 
-  if (loading) {
-    return (
-      <>
-        <section className="flex justify-center items-center" >
-          {/* <img src={gifLoading} /> */}
-          <h1>
-            loading woiiii!!!
-          </h1>
-        </section>
-      </>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <>
+  //       <section className="flex justify-center items-center" >
+  //         {/* <img src={gifLoading} /> */}
+  //         <h1>
+  //           loading woiiii!!!
+  //         </h1>
+  //       </section>
+  //     </>
+  //   );
+  // }
 
   return (
     <>
@@ -28,7 +28,7 @@ export default function HomePage() {
             Are You Ready Now?
           </button>
           <p className="mt-12 text-sm ">
-            ONLY BRAVE and SMART PERSON CAN JOIN THIS APPS{" "}
+            ONLY BRAVE PERSON CAN JOIN THIS APPS{" "}
             <span className="text-purple-600 font-bold">tHINK ABOUT IT</span>{" "}
           
           </p>
