@@ -18,12 +18,12 @@ export default function Register() {
 
   return (
     <>
-      <div className="p-10">
-        <h1 className="mb-8 font-extrabold text-4xl">Register</h1>
+      <div className="p-10 bg-white">
+        <h1 className="mb-8 font-semibold text-4xl text-gray-800">Register</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <form onSubmit={handleSubmit}>
             <div>
-              <label className="block font-semibold" htmlFor="name">
+              <label className="text-gray-800" htmlFor="name">
                 Name
               </label>
               <input
@@ -35,7 +35,7 @@ export default function Register() {
               />
             </div>
             <div className="mt-4">
-              <label className="block font-semibold" htmlFor="password">
+              <label className="text-gray-800" htmlFor="password">
                 Password
               </label>
               <input
@@ -54,7 +54,7 @@ export default function Register() {
               >
                 Register
               </button>
-              <Link to={"/login"} className="font-semibold">
+              <Link to={"/login"} className="font-semibold text-gray-800">
                 Already registered?
               </Link>
             </div>

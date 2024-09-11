@@ -88,22 +88,42 @@ class MainController {
     try {
       const { id } = req.loginInfo;
       const { roomid } = req.params;
+      const {password} = req.body
+
+      const room = await Room.findByPk(roomid);
+
+      if (password !== room.password) throw {name: "INVALID"}
+
       await Room.update(
         { OpponentId: id, status: "Playing" },
         { where: { id: roomid } },
       );
-      const room = await Room.findByPk(roomid);
       res.status(200).json({ message: "Match Start!", room });
     } catch (error) {
       let statusCode = 500;
       let message = "Internal Server Error";
+      if (error.name === 'INVALID') {
+        statusCode = 401
+        message = "Incorrect password"
+      }
       res.status(statusCode).json({ message });
     }
   }
 
   static async getRooms(req, res, next) {
     try {
-      const rooms = await Room.findAll();
+      const rooms = await Room.findAll({
+        where : {
+          status: "Waiting"
+        },
+        include: {
+          model: User,
+          as: "Host ID",
+          attributes: {
+            exclude: ["password"]
+          }
+        }
+      });
 
       res.status(200).json(rooms);
     } catch (error) {

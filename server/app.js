@@ -12,8 +12,9 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  socket.on("create-room", (data) => {
-    console.log(data);
+  socket.on("join", (roomId, color) => {
+    socket.join(roomId)
+    socket.to(roomId).emit(color)
   });
 
   socket.on("position:new", (move) => {
