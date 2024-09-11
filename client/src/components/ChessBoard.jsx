@@ -1,10 +1,12 @@
 import Chessboard from "chessboardjsx";
 import { Chess } from "chess.js";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
+import { colorContext } from "../context/ColorContext";
 
 export default function ChessBoard({ socket }) {
   const [fen, setFen] = useState("start");
-  const [checkSquare, setCheckSquare] = useState()
+  const [checkSquare, setCheckSquare] = useState();
+  const { currentColor, color, setCurrentColor } = useContext(colorContext);
 
   let game = useRef(null);
 
@@ -16,8 +18,8 @@ export default function ChessBoard({ socket }) {
     socket.on("position:update", (move) => {
       console.log(move);
 
-      game.current.move(move)
-      setFen(game.current.fen())
+      game.current.move(move);
+      setFen(game.current.fen());
 
       if (game.current.inCheck()) {
         const kingSquare = findKingSquare(game.current);
@@ -25,12 +27,11 @@ export default function ChessBoard({ socket }) {
       } else {
         setCheckSquare(null);
       }
-
     });
 
     return () => {
       socket.off("position:update");
-      socket.disconnect()
+      socket.disconnect();
     };
   }, []);
 
@@ -39,6 +40,12 @@ export default function ChessBoard({ socket }) {
       let move = {
         from: sourceSquare,
         to: targetSquare,
+      };
+
+      const sideColor = currentColor[0]
+
+      if (game.current.get(sourceSquare).color !== sideColor) {
+        throw new Error()
       }
 
       game.current.move(move);
@@ -52,11 +59,10 @@ export default function ChessBoard({ socket }) {
         setCheckSquare(null);
       }
 
-      socket.emit("position:new", move)
-
+      socket.emit("position:new", move);
     } catch (error) {
       setFen(game.current.fen());
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -90,6 +96,7 @@ export default function ChessBoard({ socket }) {
         showNotation={true}
         lightSquareStyle={{ backgroundColor: "rgb(238, 238, 213)" }}
         darkSquareStyle={{ backgroundColor: "rgb(124, 148, 92)" }}
+        orientation={currentColor}
       />
     </div>
   );
