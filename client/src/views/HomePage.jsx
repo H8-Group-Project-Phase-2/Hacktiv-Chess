@@ -23,12 +23,12 @@ export default function HomePage() {
           <p className="text-lg mb-6">Find your game</p>
           <button
             className="bg-blue-500 text-white px-4 py-2 ml-2 rounded-lg hover:bg-blue-700 transition"
-            onClick={getAiPrompt}
+            // onClick={getAiPrompt}
           >
             Are You Ready Now?
           </button>
           <p className="mt-12 text-sm ">
-            ONLY BRAVE PERSON CAN JOIN THIS APPS{" "}
+            ONLY BRAVE and SMART PERSON CAN JOIN THIS APPS{" "}
             <span className="text-purple-600 font-bold">tHINK ABOUT IT</span>{" "}
           
           </p>
