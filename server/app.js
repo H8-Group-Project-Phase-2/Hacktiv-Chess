@@ -1,23 +1,21 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const { createServer } = require('node:http');
-const { Server } = require('socket.io');
+const { createServer } = require("node:http");
+const { Server } = require("socket.io");
 
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173"
-  }
+    origin: "http://localhost:5173",
+  },
 });
 
 io.on("connection", (socket) => {
-
-  socket.on("position:new", move => {
-    socket.broadcast.emit("position:update", move)
-  })
-
-})
+  socket.on("position:new", (move) => {
+    socket.broadcast.emit("position:update", move);
+  });
+});
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -31,11 +29,13 @@ const userAuthentication = require("./middlewares/userAuthentication");
 app.use(userAuthentication);
 
 const MainController = require("./controllers/mainController");
+app.get("/user/:userid", MainController.getUserInfo);
 app.patch("/winner", MainController.patchWinner);
 app.patch("/loser", MainController.patchLoser);
 app.patch("/draw", MainController.patchDraws);
-
-
+app.post("/create-room", MainController.postRoom);
+app.get("/join-room", MainController.getRooms);
+app.patch("/join-room/:roomid", MainController.patchJoinRoom);
 
 const port = 3000;
 server.listen(port, () => {
