@@ -47,7 +47,7 @@ app.get("/user/:userid", MainController.getUserInfo);
 app.patch("/winner", MainController.patchWinner);
 app.patch("/loser", MainController.patchLoser);
 app.patch("/draw", MainController.patchDraws);
-app.post("/rooms", MainController.postRoom);
+app.post("/rooms", MainController.postRoom); //create room
 app.get("/rooms", MainController.getRooms);
 app.get("/rooms/:roomId", MainController.getRoom);
 app.patch("/rooms/:roomid", MainController.patchJoinRoom);

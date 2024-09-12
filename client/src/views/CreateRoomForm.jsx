@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 export default function CreateRoomForm({url}) {
   const [password, setPassword] = useState();
-
   const navigate = useNavigate()
 
   async function handleCreateRoom(e) {
