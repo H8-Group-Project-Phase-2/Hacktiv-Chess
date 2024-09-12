@@ -4,8 +4,9 @@ import { useEffect, useState, useRef, useContext } from "react";
 import { colorContext } from "../context/ColorContext";
 
 export default function ChessBoard({ socket, roomId }) {
-  const [fen, setFen] = useState("start");
+  const [fen, setFen] = useState("");
   const [checkSquare, setCheckSquare] = useState();
+  const [winner, setWinner] = useState();
   const { currentColor } = useContext(colorContext);
 
   let game = useRef(null);
@@ -13,57 +14,98 @@ export default function ChessBoard({ socket, roomId }) {
   useEffect(() => {
     socket.connect();
 
-    game.current = new Chess();
+    socket.emit("initialize", roomId);
 
-    socket.on("position:update", (move) => {
-      console.log(move);
+    socket.on("initialFen", (fen) => {
+      setFen(fen);
+    });
 
-      game.current.move(move);
-      setFen(game.current.fen());
+    socket.on("updatePosition", (fen) => {
+      if (fen) {
+        setFen(fen);
 
-      if (game.current.inCheck()) {
-        const kingSquare = findKingSquare(game.current);
-        setCheckSquare(kingSquare);
-      } else {
-        setCheckSquare(null);
+        if (game.current.inCheck()) {
+          const kingSquare = findKingSquare(game.current);
+          setCheckSquare(kingSquare);
+  
+          if (game.current.isCheckmate()){
+            const loser = game.current.get(kingSquare).color
+            if (loser === "w") {
+              setWinner("Black")
+            } else if (loser === "b") {
+              setWinner("White")
+            }
+          }
+  
+        } else {
+          setCheckSquare(null);
+        }
       }
     });
 
+    // socket.on("sendCheckmate", (winner) => {
+    //   console.log(winner, "WIN")
+    //   setWinner(winner)
+    // })
+
     return () => {
-      socket.off("position:update");
       socket.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    if (fen.length > 0) {
+      game.current = new Chess(fen);
+
+      socket.emit("currentPosition", fen, roomId);
+    }
+  }, [fen]);
+
+  // useEffect(() => {
+
+  // }, game.current.fen())
 
   const onDrop = ({ sourceSquare, targetSquare }) => {
     try {
       let move = {
         from: sourceSquare,
         to: targetSquare,
-        promotion: "q"
+        promotion: "q",
       };
 
-      const sideColor = currentColor[0]
+      const sideColor = currentColor[0];
 
       if (game.current.get(sourceSquare).color !== sideColor) {
-        throw new Error()
+        throw new Error();
       }
 
       game.current.move(move);
+
+      console.log("current fen is", game.current.fen());
 
       setFen(game.current.fen());
 
       if (game.current.inCheck()) {
         const kingSquare = findKingSquare(game.current);
         setCheckSquare(kingSquare);
+
+        if (game.current.isCheckmate()) {
+          const loser = game.current.get(kingSquare).color;
+          if (loser === "w") {
+            setWinner("Black");
+          } else if (loser === "b") {
+            setWinner("White");
+          }
+        }
       } else {
         setCheckSquare(null);
       }
-
-      socket.emit("position:new", roomId, move);
     } catch (error) {
       setFen(game.current.fen());
       console.log(error);
+    } finally {
+      // console.log("current fen on finally is", fen);
+      // socket.emit("position:new", roomId, fen);
     }
   };
 
@@ -90,6 +132,7 @@ export default function ChessBoard({ socket, roomId }) {
 
   return (
     <div>
+      {winner && <h1>{`${winner} WIN !!!!`}</h1>}
       <Chessboard
         position={fen}
         onDrop={onDrop}

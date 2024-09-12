@@ -3,6 +3,8 @@ const cors = require("cors");
 const app = express();
 const { createServer } = require("node:http");
 const { Server } = require("socket.io");
+const { Room } = require("./models/index");
+const { Chess } = require("chess.js");
 
 const server = createServer(app);
 const io = new Server(server, {
@@ -12,23 +14,28 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  socket.on("join", (roomId) => {
-    socket.join(roomId)
-    console.log(`someone joined room ${roomId}`)
+  socket.on("initialize", async (roomId) => {
+    socket.join(roomId);
+    // console.log(roomId)
+    const { fen } = await Room.findByPk(roomId);
+    // console.log(fen)
+    io.to(roomId).emit("initialFen", fen);
   });
 
-  socket.on("position:new", (roomId, move) => {
-    console.log(roomId)
-    console.log(move)
-
-    if (!io.sockets.adapter.rooms.has(roomId)) {
-      console.error(`Room ${roomId} does not exist.`);
-      return;
-    }
-
-    console.log(`Received move for room ${roomId}:`, move);
-    io.to(roomId).emit("position:update", move);
+  socket.on("play", (fen, roomId) => {
+    // console.log(fen)
+    // console.log(fen)
+    // io.to(roomId).emit("gamePosition", gamePosition)
   });
+
+  socket.on("currentPosition", async (fen, roomId) => {
+    await Room.update({ fen }, { where: { id: roomId } });
+    io.to(roomId).emit("updatePosition", fen);
+  });
+
+  // socket.on("checkmate", (currentColor, roomId)=> {
+  //   io.to(roomId).emit("sendCheckmate", currentColor)
+  // })
 });
 
 app.use(cors());
