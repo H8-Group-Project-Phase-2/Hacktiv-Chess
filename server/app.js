@@ -47,7 +47,7 @@ app.get("/rooms", MainController.getRooms);
 app.get("/rooms/:roomId", MainController.getRoom);
 app.patch("/rooms/:roomid", MainController.patchJoinRoom);
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 server.listen(port, () => {
   console.log("Berlari di port", port);
 });
