@@ -7,10 +7,10 @@ import ThemeProvider from "./context/ThemeContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ThemeProvider>
-      <ColorContext>
+    <ColorContext>
+      <ThemeProvider>
         <App />
-      </ColorContext>
-    </ThemeProvider>
+      </ThemeProvider>
+    </ColorContext>
   </StrictMode>
 );
