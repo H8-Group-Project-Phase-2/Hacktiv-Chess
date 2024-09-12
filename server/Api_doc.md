@@ -9,6 +9,11 @@ List of available endpoints:
 - `PATCH /winner`
 - `PATCH /losser`
 - `PATCH /draw`
+- `GET /user/:userId`
+- `POST /rooms`
+- `GET /rooms`
+- `GET /rooms/:roomId`
+- `PATCH /rooms/:roomId`
 
 &nbsp;
 
@@ -166,6 +171,163 @@ _Response (400 - Bad Request)_
 ```json
 {
   "message": "Invalid request data"
+}
+```
+
+&nbsp;
+
+## 6. GET /user/:userId
+Description:
+Retrieve user information by user ID.
+
+Request:
+
+- Params:
+userid: The ID of the user to retrieve information.
+
+_Responses(200 - OK)_
+
+
+```json
+
+{
+  "id": "integer",
+  "username": "string",
+  "status": "string"
+}
+
+```
+_Response (400 - Bad Request)_
+
+```json
+
+{
+  "message": "Invalid user ID"
+}
+
+```
+
+&nbsp;
+
+## 7. POST /rooms
+Description:
+Create a new game room.
+
+Request:
+
+- Body:
+
+```json
+
+{
+  "roomName": "string"
+}
+
+```
+_Responses(201 - Created)_
+
+
+```json
+
+{
+  "roomId": "integer",
+  "roomName": "string"
+}
+
+```
+_Responses (400 - Bad Request)_
+
+```json
+
+{
+  "message": "Room name is required"
+}
+
+```
+
+&nbsp;
+
+## 8. GET /rooms
+Description:
+Get all available rooms.
+
+_Responses (200 - OK)_
+
+
+```json
+
+[
+  {
+    "roomId": "integer",
+    "roomName": "string"
+  }
+]
+
+```
+&nbsp;
+
+## 9. GET /rooms/
+Description:
+Retrieve details of a specific room by its ID.
+
+Request:
+
+Params:
+roomId: The ID of the room to retrieve.
+
+_Responses(200 - OK)_
+
+
+```json
+
+{
+  "roomId": "integer",
+  "roomName": "string",
+  "players": [
+    {
+      "playerId": "integer",
+      "username": "string"
+    }
+  ]
+}
+
+```
+
+_Responses(404 - Not Found)_
+
+```json
+
+{
+  "message": "Room not found"
+}
+
+```
+&nbsp;
+
+## 10. PATCH /rooms/
+Description:
+Join a room by its ID.
+
+Request:
+
+Params:
+roomid: The ID of the room to join.
+
+_Responses(200 - OK)_
+
+
+```json
+
+{
+  "message": "Successfully joined the room"
+}
+```
+
+Responses (404 - Not Found)_
+```json
+
+{
+  "message": "Room not found"
 }
 ```
 

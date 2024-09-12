@@ -3,10 +3,10 @@ import { Chess } from "chess.js";
 import { useEffect, useState, useRef, useContext } from "react";
 import { colorContext } from "../context/ColorContext";
 
-export default function ChessBoard({ socket }) {
+export default function ChessBoard({ socket, roomId }) {
   const [fen, setFen] = useState("start");
   const [checkSquare, setCheckSquare] = useState();
-  const { currentColor, color, setCurrentColor } = useContext(colorContext);
+  const { currentColor } = useContext(colorContext);
 
   let game = useRef(null);
 
@@ -40,6 +40,7 @@ export default function ChessBoard({ socket }) {
       let move = {
         from: sourceSquare,
         to: targetSquare,
+        promotion: "q"
       };
 
       const sideColor = currentColor[0]
@@ -59,7 +60,7 @@ export default function ChessBoard({ socket }) {
         setCheckSquare(null);
       }
 
-      socket.emit("position:new", move);
+      socket.emit("position:new", roomId, move);
     } catch (error) {
       setFen(game.current.fen());
       console.log(error);

@@ -38,9 +38,12 @@ class AuthControllers {
         username: user.username,
       };
 
-      const access_token = signToken(payload);
+      const userInfo = {
+        access_token: signToken(payload),
+        username: payload.username,
+      };
 
-      res.status(200).json({ access_token });
+      res.status(200).json(userInfo);
     } catch (error) {
       let statusCode = 500;
       let message = "Internal Server Error";
