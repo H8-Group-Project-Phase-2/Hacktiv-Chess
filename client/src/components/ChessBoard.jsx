@@ -6,6 +6,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 export default function ChessBoard({ socket, roomId, url }) {
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [screenHeight, setScreenHeight] = useState(window.innerHeight);
   const [fen, setFen] = useState("");
   const [checkSquare, setCheckSquare] = useState();
   const [winner, setWinner] = useState();
@@ -101,7 +103,7 @@ export default function ChessBoard({ socket, roomId, url }) {
     } catch (error) {
       setFen(game.current.fen());
       console.log(error);
-    } 
+    }
   };
 
   const findKingSquare = (gameInstance) => {
@@ -134,7 +136,7 @@ export default function ChessBoard({ socket, roomId, url }) {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
-        },
+        }
       );
     }
   }
@@ -143,9 +145,28 @@ export default function ChessBoard({ socket, roomId, url }) {
     recordWinner(currentColor, winner);
   }, [winner]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+      setScreenHeight(window.innerHeight);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const calcWidth = () => {
+    return Math.min(screenWidth * 0.75, 500);
+  };
+
   return (
     <div>
-      {winner && <h1>{`${winner} WIN !!!!`}</h1>}
+      <div className="flex justify-center mb-2">
+        {winner && <h1 className="text-white text-xl font-semibold">{`${winner} win!`}</h1>}
+      </div>
       <Chessboard
         position={fen}
         onDrop={onDrop}
@@ -154,6 +175,7 @@ export default function ChessBoard({ socket, roomId, url }) {
         lightSquareStyle={{ backgroundColor: "rgb(238, 238, 213)" }}
         darkSquareStyle={{ backgroundColor: "rgb(124, 148, 92)" }}
         orientation={currentColor}
+        calcWidth={() => calcWidth()}
       />
     </div>
   );

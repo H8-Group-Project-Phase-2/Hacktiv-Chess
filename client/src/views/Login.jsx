@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import beth from "../assets/beth.jpg";
+import knight from "../assets/knight.svg";
+import bethFull from "../assets/beth-full-darken.jpg";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -42,13 +45,24 @@ export default function Login() {
   }
 
   return (
-    <div className="contain py-16">
-      <div className="max-w-lg mx-auto shadow px-6 py-7 rounded overflow-hidden">
-        <h2 className="text-2xl uppercase font-medium mb-1">Login</h2>
-        <p className="text-gray-800 mb-6 text-sm">
-          Welcome! So good to have you back!
-        </p>
-        <form onSubmit={handleSubmit}>
+    <div
+      className={`flex justify-center min-h-screen min-w-screen`}
+      style={{
+        backgroundImage: `url(${bethFull})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      {/* <div className="flex justify-center items-center w-1/2 bg-orange-300">
+        <img src={beth} className="h-full brightness-50" />
+      </div> */}
+      <div className="flex flex-col justify-center items-center w-1/2 p-2 relative-z-10">
+        <img src={knight} alt="Logo" className="w-20 h-20" />
+        <span className="text-white text-2xl font-semibold mb-5">
+          Hacktiv Chess
+        </span>
+
+        <form onSubmit={handleSubmit} className="w-3/4">
           <p className="text-red-500" />
           <div className="space-y-2">
             <div>
@@ -60,7 +74,7 @@ export default function Login() {
                 name="name"
                 id="name"
                 className="block w-full border bg-slate-100 border-gray-300 px-4 py-3 text-gray-800 text-sm rounded focus:ring-0 focus:border-teal-500 placeholder-gray-400"
-                placeholder="put your name"
+                placeholder="username"
               />
             </div>
           </div>
@@ -75,7 +89,7 @@ export default function Login() {
                   name="password"
                   id="password"
                   className="block w-full border bg-slate-100 border-gray-300 px-4 py-3 text-gray-800 text-sm rounded focus:ring-0 focus:border-teal-500 placeholder-gray-400"
-                  placeholder="***********"
+                  placeholder="*******"
                 />
                 <div className="cursor-pointer absolute inset-y-0 right-0 flex items-center px-8 text-gray-800 border-l border-gray-300">
                   <div onClick={handle}>

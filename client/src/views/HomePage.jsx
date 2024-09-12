@@ -40,16 +40,12 @@ export default function HomePage({ url }) {
   const { currentTheme, theme } = useContext(themeContext);
 
   return (
-    <div className="min-h-screen" data-theme={theme[currentTheme].dataTheme}>
-      <div classnam="flex flex-col justify-start">
-        <div className="flex justify-between">
-          <button
-            onClick={handleCreateRoom}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Create Room
-          </button>
-
+    <div
+      className="min-h-screen min-w-screeen py-5 px-10"
+      data-theme={theme[currentTheme].dataTheme}
+    >
+      <div classnam="flex flex-col justify-start min-h-screen">
+        <div className="flex justify-end ">
           <button
             onClick={fetchRooms}
             className={`${
@@ -58,35 +54,27 @@ export default function HomePage({ url }) {
                 : "text-white"
             } bg-opacity-100 px-4 py-2 rounded flex items-center`}
           >
-            <svg
-              className={`animate-spin h-5 w-5 mr-2 ${
-                theme[currentTheme].dataTheme === "light"
-                  ? "text-black"
-                  : "text-white"
-              }`}
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-              />
-            </svg>
-            Refresh
+            <span className="flex items-center justify-center gap-1">
+              <div className="text-2xl">↻</div>
+              <div>Refresh</div>
+            </span>
           </button>
         </div>
         <div className="flex justify-end"></div>
-
-        <main className="flex flex-wrap justify-start gap-5">
-          {rooms.length > 0 &&
-            rooms.map((room) => {
-              return <CardRoom room={room} url={url} />;
-            })}
-        </main>
+        <div className="flex flex-col border-2 p-3 gap-10 rounded-md">
+          <button
+            onClick={handleCreateRoom}
+            className="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 w-fit"
+          >
+            Create Room
+          </button>
+          <main className="flex flex-wrap justify-center items-start gap-5">
+            {rooms.length > 0 &&
+              rooms.map((room) => {
+                return <CardRoom room={room} url={url} />;
+              })}
+          </main>
+        </div>
       </div>
     </div>
   );

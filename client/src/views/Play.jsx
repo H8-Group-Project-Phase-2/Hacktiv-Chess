@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { colorContext } from "../context/ColorContext";
 import Swal from "sweetalert2";
+import { themeContext } from "../context/ThemeContext";
 
 export default function Play({ socket, url }) {
   const { roomId } = useParams();
@@ -48,9 +49,18 @@ export default function Play({ socket, url }) {
     }
   }
 
+  const { currentTheme, theme } = useContext(themeContext);
+
   return (
     <>
-      <ChessBoard socket={socket} roomId={roomId} url={url} />
+      <div
+        className="flex justify-center min-h-screen min-w-screeen p-10"
+        data-theme={theme[currentTheme].dataTheme}
+      >
+        <div className="w-fit h-fit rounded-md p-3 bg-gradient-to-b from-[#0F2027] via-[#203A43] to-[#2c5364]">
+          <ChessBoard socket={socket} roomId={roomId} url={url} />
+        </div>
+      </div>
     </>
   );
 }
