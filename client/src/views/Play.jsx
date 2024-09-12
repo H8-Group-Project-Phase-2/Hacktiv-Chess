@@ -3,46 +3,51 @@ import ChessBoard from "../components/ChessBoard";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { colorContext } from "../context/ColorContext";
+import Swal from "sweetalert2";
 
-export default function Play({socket, url}) {
-  const { roomId } = useParams()
+export default function Play({ socket, url }) {
+  const { roomId } = useParams();
   const { setCurrentColor } = useContext(colorContext);
 
   useEffect(() => {
     socket.connect();
 
-    joinRoom()
+    joinRoom();
 
     return () => {
-      socket.disconnect()
-    }
-  }, [])
+      socket.disconnect();
+    };
+  }, []);
 
   async function joinRoom() {
     try {
       const { data } = await axios.get(`${url}/rooms/${roomId}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`
-        }
-      })
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
 
       if (data["Host ID"].username === localStorage.getItem("username")) {
-        socket.emit("join", roomId)
-        setCurrentColor("white")
-        console.log("9898988988988989")
-      } else if (data["Opponent ID"].username === localStorage.getItem("username")){
-        socket.emit("join", roomId)
-        setCurrentColor("black")
+        socket.emit("join", roomId);
+        setCurrentColor("white");
+        console.log("9898988988988989");
+      } else if (
+        data["Opponent ID"].username === localStorage.getItem("username")
+      ) {
+        socket.emit("join", roomId);
+        setCurrentColor("black");
       }
-      
     } catch (error) {
-      console.log(error)
+      Swal.fire({
+        icon: "error",
+        title: error.response.data.message,
+      });
     }
   }
 
   return (
     <>
-      <ChessBoard socket={socket} roomId={roomId}/>
+      <ChessBoard socket={socket} roomId={roomId} />
     </>
   );
 }

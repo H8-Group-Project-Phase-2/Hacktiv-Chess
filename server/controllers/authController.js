@@ -49,7 +49,7 @@ class AuthControllers {
       let message = "Internal Server Error";
       if (error.name === "INPUTREQ") {
         statusCode = 400;
-        message = error.errors[0].message;
+        message = "Invalid Username/ Password";
       }
       if (error.name === "INVALID") {
         statusCode = 401;

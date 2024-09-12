@@ -1,31 +1,41 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
-export default function CreateRoomForm({url}) {
+export default function CreateRoomForm({ url }) {
   const [password, setPassword] = useState();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   async function handleCreateRoom(e) {
     try {
-      e.preventDefault()
+      e.preventDefault();
 
-      const { data } = await axios.post(`${url}/rooms`, {password}, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`
+      const { data } = await axios.post(
+        `${url}/rooms`,
+        { password },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
         }
-      })
+      );
 
-      navigate(`/play/${data.id}`)
-
+      navigate(`/play/${data.id}`);
     } catch (error) {
-      console.log(error)
+      Swal.fire({
+        icon: "error",
+        title: error.response.data.message,
+      });
     }
   }
 
   return (
-    <form className="max-w-xl mx-auto p-4 shadow-lg rounded-lg bg-white" onSubmit={(e) => handleCreateRoom(e)}>
+    <form
+      className="max-w-xl mx-auto p-4 shadow-lg rounded-lg bg-white"
+      onSubmit={(e) => handleCreateRoom(e)}
+    >
       <h2 className="text-2xl font-bold mb-4">Create Room</h2>
 
       <div className="mb-4">

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -13,11 +14,23 @@ export default function Login() {
     try {
       const body = { username, password };
       const { data } = await axios.post("http://localhost:3000/login", body);
+
+      Swal.fire({
+        title: "Login Success!",
+        icon: "success",
+      });
+
       localStorage.setItem("access_token", data.access_token);
       localStorage.setItem("username", data.username);
+
       navigate("/");
       // console.log(data);
-    } catch (error) {}
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: error.response.data.message,
+      });
+    }
   }
 
   function handle() {

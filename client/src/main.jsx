@@ -3,11 +3,14 @@ import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 import ColorContext from "./context/ColorContext.jsx";
+import ThemeProvider from "./context/ThemeContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ColorContext>
-      <App />
-    </ColorContext>
+    <ThemeProvider>
+      <ColorContext>
+        <App />
+      </ColorContext>
+    </ThemeProvider>
   </StrictMode>
 );
