@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -13,7 +14,12 @@ export default function Register() {
       const body = { username, password };
       await axios.post("http://localhost:3000/register", body);
       navigate("/login");
-    } catch (error) {}
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: error.response.data.message,
+      });
+    }
   }
 
   return (

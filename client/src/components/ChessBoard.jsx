@@ -2,8 +2,10 @@ import Chessboard from "chessboardjsx";
 import { Chess } from "chess.js";
 import { useEffect, useState, useRef, useContext } from "react";
 import { colorContext } from "../context/ColorContext";
+import axios from "axios";
+import Swal from "sweetalert2";
 
-export default function ChessBoard({ socket, roomId }) {
+export default function ChessBoard({ socket, roomId, url }) {
   const [fen, setFen] = useState("");
   const [checkSquare, setCheckSquare] = useState();
   const [winner, setWinner] = useState();
@@ -27,16 +29,18 @@ export default function ChessBoard({ socket, roomId }) {
         if (game.current.inCheck()) {
           const kingSquare = findKingSquare(game.current);
           setCheckSquare(kingSquare);
-  
-          if (game.current.isCheckmate()){
-            const loser = game.current.get(kingSquare).color
+
+          if (game.current.isCheckmate()) {
+            let winnerSide;
+            const loser = game.current.get(kingSquare).color;
             if (loser === "w") {
-              setWinner("Black")
+              setWinner("Black");
+              winnerSide = "black";
             } else if (loser === "b") {
-              setWinner("White")
+              setWinner("White");
+              winnerSide = "white";
             }
           }
-  
         } else {
           setCheckSquare(null);
         }
@@ -90,11 +94,14 @@ export default function ChessBoard({ socket, roomId }) {
         setCheckSquare(kingSquare);
 
         if (game.current.isCheckmate()) {
+          let winnerSide;
           const loser = game.current.get(kingSquare).color;
           if (loser === "w") {
             setWinner("Black");
+            winnerSide = "black";
           } else if (loser === "b") {
             setWinner("White");
+            winnerSide = "white";
           }
         }
       } else {
@@ -129,6 +136,27 @@ export default function ChessBoard({ socket, roomId }) {
   const checkStyle = checkSquare
     ? { [checkSquare]: { backgroundColor: "red" } }
     : {};
+
+  async function recordWinner(player, winner) {
+    console.log(player, "dari record win");
+    console.log(winner, "sama");
+
+    if (player === winner.toLowerCase()) {
+      await axios.patch(
+        `${url}/winner`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        },
+      );
+    }
+  }
+
+  useEffect(() => {
+    recordWinner(currentColor, winner);
+  }, [winner]);
 
   return (
     <div>

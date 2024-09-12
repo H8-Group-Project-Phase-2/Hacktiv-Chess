@@ -16,14 +16,14 @@ const socket = io(url, {
 const router = createBrowserRouter([
   {
     path: "/register",
-    element: <Register url={url}/>,
+    element: <Register url={url} />,
   },
   {
     path: "/login",
-    element: <Login url={url}/>,
+    element: <Login url={url} />,
   },
   {
-    element: <BaseLayOut socket={socket} url={url}/>,
+    element: <BaseLayOut socket={socket} url={url} />,
     loader: () => {
       if (!localStorage.access_token) {
         return redirect("/login");
@@ -33,15 +33,15 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomePage socket={socket} url={url}/>,
+        element: <HomePage socket={socket} url={url} />,
       },
       {
         path: "/play/:roomId",
-        element: <Play socket={socket} url={url}/>,
+        element: <Play socket={socket} url={url} />,
       },
       {
         path: "/room-form",
-        element: <CreateRoomForm url={url}/>,
+        element: <CreateRoomForm url={url} />,
       },
     ],
   },

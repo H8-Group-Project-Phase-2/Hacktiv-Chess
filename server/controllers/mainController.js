@@ -9,6 +9,8 @@ class MainController {
         { matches: user.matches + 1, wins: user.wins + 1 },
         { where: { id } },
       );
+      console.log(user);
+
       res.status(200).json({ message: "You Win!" });
     } catch (error) {
       let statusCode = 500;
@@ -88,11 +90,11 @@ class MainController {
     try {
       const { id } = req.loginInfo;
       const { roomid } = req.params;
-      const {password} = req.body
+      const { password } = req.body;
 
       const room = await Room.findByPk(roomid);
 
-      if (password !== room.password) throw {name: "INVALID"}
+      if (password !== room.password) throw { name: "INVALID" };
 
       await Room.update(
         { OpponentId: id, status: "Playing" },
@@ -102,9 +104,9 @@ class MainController {
     } catch (error) {
       let statusCode = 500;
       let message = "Internal Server Error";
-      if (error.name === 'INVALID') {
-        statusCode = 401
-        message = "Incorrect password"
+      if (error.name === "INVALID") {
+        statusCode = 401;
+        message = "Incorrect password";
       }
       res.status(statusCode).json({ message });
     }
@@ -113,16 +115,16 @@ class MainController {
   static async getRooms(req, res, next) {
     try {
       const rooms = await Room.findAll({
-        where : {
-          status: "Waiting"
+        where: {
+          status: "Waiting",
         },
         include: {
           model: User,
           as: "Host ID",
           attributes: {
-            exclude: ["password"]
-          }
-        }
+            exclude: ["password"],
+          },
+        },
       });
 
       res.status(200).json(rooms);
@@ -133,25 +135,28 @@ class MainController {
     }
   }
 
-  static async getRoom(req, res,next) {
+  static async getRoom(req, res, next) {
     try {
-      const {roomId} = req.params
+      const { roomId } = req.params;
       const room = await Room.findByPk(roomId, {
-        include: [{
-          model: User,
-          as: "Host ID",
-          attributes: {
-            exclude: ["password"]
-          }
-        }, {
-          model: User, 
-          as: "Opponent ID", 
-          attributes: {
-            exclude: ["password"]
-          }
-        }]
-      })
-      res.status(200).json(room)
+        include: [
+          {
+            model: User,
+            as: "Host ID",
+            attributes: {
+              exclude: ["password"],
+            },
+          },
+          {
+            model: User,
+            as: "Opponent ID",
+            attributes: {
+              exclude: ["password"],
+            },
+          },
+        ],
+      });
+      res.status(200).json(room);
     } catch (error) {
       let statusCode = 500;
       let message = "Internal Server Error";
