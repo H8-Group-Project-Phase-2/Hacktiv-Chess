@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Toastify from "toastify-js";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -12,11 +13,44 @@ export default function Login() {
     try {
       const body = { username, password };
       const { data } = await axios.post("http://localhost:3000/login", body);
+
+      Toastify({
+        text: "Login Successful",
+        duration: 2000,
+        newWindow: true,
+        close: true,
+        gravity: "top",
+        position: "right",
+        stopOnFocus: true,
+        style: {
+          background: "#00B29F",
+          color: "#17202A",
+          boxShadow: "0 5px 10px black",
+          fontWeight: "bold",
+        },
+      }).showToast();
       localStorage.setItem("access_token", data.access_token);
       localStorage.setItem("username", data.username);
       navigate("/");
       // console.log(data);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+      Toastify({
+        text: error.response?.data?.error || "Login Failed",
+        duration: 2000,
+        newWindow: true,
+        close: true,
+        gravity: "bottom",
+        position: "right",
+        stopOnFocus: true,
+        style: {
+          background: "#EF4C54",
+          color: "#17202A",
+          boxShadow: "0 5px 10px black",
+          fontWeight: "bold",
+        },
+      }).showToast();
+    }
   }
 
   return (

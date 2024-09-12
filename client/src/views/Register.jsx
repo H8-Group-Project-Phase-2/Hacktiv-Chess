@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Toastify from "toastify-js";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -12,8 +13,40 @@ export default function Register() {
     try {
       const body = { username, password };
       await axios.post("http://localhost:3000/register", body);
+
+      Toastify({
+        text: "Registration Successful",
+        duration: 2000,
+        newWindow: true,
+        close: true,
+        gravity: "top",
+        position: "right",
+        stopOnFocus: true,
+        style: {
+          background: "#00B29F",
+          color: "#17202A",
+          boxShadow: "0 5px 10px black",
+          fontWeight: "bold",
+        },
+      }).showToast();
       navigate("/login");
-    } catch (error) {}
+    } catch (error) {
+      Toastify({
+        text: error.response?.data.error || "Registration failed",
+        duration: 2000,
+        newWindow: true,
+        close: true,
+        gravity: "top",
+        position: "left",
+        stopOnFocus: true,
+        style: {
+          background: "#EF4C54",
+          color: "#17202A",
+          boxShadow: "0 5px 10px black",
+          fontWeight: "bold",
+        },
+      }).showToast();
+    }
   }
 
   return (
