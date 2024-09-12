@@ -7,7 +7,7 @@ import HomePage from "../views/HomePage";
 import BaseLayOut from "../Layout/BaseLayOut";
 import CreateRoomForm from "../views/CreateRoomForm";
 
-const url = "http://localhost:3000";
+const url = "https://hacktiv-chess.geraldsimanullang.site";
 
 const socket = io(url, {
   autoConnect: false,
