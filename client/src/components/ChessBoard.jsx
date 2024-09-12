@@ -4,7 +4,9 @@ import { useEffect, useState, useRef, useContext } from "react";
 import { colorContext } from "../context/ColorContext";
 
 export default function ChessBoard({ socket, roomId }) {
-  const [fen, setFen] = useState("start");
+  const [fen, setFen] = useState(
+    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+  );
   const [checkSquare, setCheckSquare] = useState();
   const { currentColor } = useContext(colorContext);
 
@@ -13,13 +15,13 @@ export default function ChessBoard({ socket, roomId }) {
   useEffect(() => {
     socket.connect();
 
-    game.current = new Chess();
+    // game.current = new Chess();
 
-    socket.on("position:update", (move) => {
-      console.log(move);
+    socket.emit("fetchInitialPosition", roomId);
 
-      game.current.move(move);
-      setFen(game.current.fen());
+    socket.on("position:update", (fen) => {
+      console.log(fen);
+      setFen(fen);
 
       if (game.current.inCheck()) {
         const kingSquare = findKingSquare(game.current);
@@ -35,21 +37,28 @@ export default function ChessBoard({ socket, roomId }) {
     };
   }, []);
 
+  useEffect(() => {
+    socket.emit("position:new", roomId, fen);
+    if (!game.current) game.current = new Chess(fen);
+  }, [fen]);
+
   const onDrop = ({ sourceSquare, targetSquare }) => {
     try {
       let move = {
         from: sourceSquare,
         to: targetSquare,
-        promotion: "q"
+        promotion: "q",
       };
 
-      const sideColor = currentColor[0]
+      const sideColor = currentColor[0];
 
       if (game.current.get(sourceSquare).color !== sideColor) {
-        throw new Error()
+        throw new Error();
       }
 
       game.current.move(move);
+
+      console.log("current fen is", game.current.fen());
 
       setFen(game.current.fen());
 
@@ -59,11 +68,12 @@ export default function ChessBoard({ socket, roomId }) {
       } else {
         setCheckSquare(null);
       }
-
-      socket.emit("position:new", roomId, move);
     } catch (error) {
       setFen(game.current.fen());
       console.log(error);
+    } finally {
+      // console.log("current fen on finally is", fen);
+      // socket.emit("position:new", roomId, fen);
     }
   };
 

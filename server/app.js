@@ -3,6 +3,7 @@ const cors = require("cors");
 const app = express();
 const { createServer } = require("node:http");
 const { Server } = require("socket.io");
+const { Room } = require("./models/index");
 
 const server = createServer(app);
 const io = new Server(server, {
@@ -13,21 +14,22 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   socket.on("join", (roomId) => {
-    socket.join(roomId)
-    console.log(`someone joined room ${roomId}`)
+    socket.join(roomId);
+    console.log(`someone joined room ${roomId}`);
   });
 
-  socket.on("position:new", (roomId, move) => {
-    console.log(roomId)
-    console.log(move)
+  socket.on("position:new", async (roomId, fen) => {
+    console.log(roomId, "ini room id");
+    console.log(fen, "ini fen");
+    await Room.update({ fen }, { where: { id: roomId } });
 
-    if (!io.sockets.adapter.rooms.has(roomId)) {
-      console.error(`Room ${roomId} does not exist.`);
-      return;
-    }
+    console.log(`Received move for room ${roomId}:`, fen);
+    io.to(roomId).emit("position:update", fen);
+  });
 
-    console.log(`Received move for room ${roomId}:`, move);
-    io.to(roomId).emit("position:update", move);
+  socket.on("fetchInitialPosition", async (roomId) => {
+    const { fen } = await Room.findByPk(roomId);
+    io.to(roomId).emit("position:update", fen);
   });
 });
 

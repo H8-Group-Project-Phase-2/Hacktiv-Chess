@@ -10,7 +10,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Room.belongsTo(models.User, { foreignKey: "HostId", as: "Host ID" });
-      Room.belongsTo(models.User, { foreignKey: "OpponentId", as: "Opponent ID" });
+      Room.belongsTo(models.User, {
+        foreignKey: "OpponentId",
+        as: "Opponent ID",
+      });
     }
   }
   Room.init(
@@ -22,6 +25,11 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: "Waiting",
       },
       password: DataTypes.STRING,
+      fen: {
+        type: DataTypes.STRING,
+        defaultValue:
+          "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      },
     },
     {
       sequelize,
