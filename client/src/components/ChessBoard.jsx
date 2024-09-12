@@ -47,11 +47,6 @@ export default function ChessBoard({ socket, roomId, url }) {
       }
     });
 
-    // socket.on("sendCheckmate", (winner) => {
-    //   console.log(winner, "WIN")
-    //   setWinner(winner)
-    // })
-
     return () => {
       socket.disconnect();
     };
@@ -64,10 +59,6 @@ export default function ChessBoard({ socket, roomId, url }) {
       socket.emit("currentPosition", fen, roomId);
     }
   }, [fen]);
-
-  // useEffect(() => {
-
-  // }, game.current.fen())
 
   const onDrop = ({ sourceSquare, targetSquare }) => {
     try {
@@ -110,10 +101,7 @@ export default function ChessBoard({ socket, roomId, url }) {
     } catch (error) {
       setFen(game.current.fen());
       console.log(error);
-    } finally {
-      // console.log("current fen on finally is", fen);
-      // socket.emit("position:new", roomId, fen);
-    }
+    } 
   };
 
   const findKingSquare = (gameInstance) => {
@@ -138,9 +126,6 @@ export default function ChessBoard({ socket, roomId, url }) {
     : {};
 
   async function recordWinner(player, winner) {
-    console.log(player, "dari record win");
-    console.log(winner, "sama");
-
     if (player === winner.toLowerCase()) {
       await axios.patch(
         `${url}/winner`,

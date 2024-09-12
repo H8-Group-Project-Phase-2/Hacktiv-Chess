@@ -16,26 +16,14 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   socket.on("initialize", async (roomId) => {
     socket.join(roomId);
-    // console.log(roomId)
     const { fen } = await Room.findByPk(roomId);
-    // console.log(fen)
     io.to(roomId).emit("initialFen", fen);
-  });
-
-  socket.on("play", (fen, roomId) => {
-    // console.log(fen)
-    // console.log(fen)
-    // io.to(roomId).emit("gamePosition", gamePosition)
   });
 
   socket.on("currentPosition", async (fen, roomId) => {
     await Room.update({ fen }, { where: { id: roomId } });
     io.to(roomId).emit("updatePosition", fen);
   });
-
-  // socket.on("checkmate", (currentColor, roomId)=> {
-  //   io.to(roomId).emit("sendCheckmate", currentColor)
-  // })
 });
 
 app.use(cors());
